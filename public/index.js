@@ -2,13 +2,10 @@ let transactions = [];
 let myChart;
 
 fetch("/api/transaction")
-  .then(response => {
-    return response.json();
-  })
+  .then(response =>  response.json())
   .then(data => {
     // save db data on global variable
     transactions = data;
-
     populateTotal();
     populateTable();
     populateChart();
@@ -68,12 +65,14 @@ function populateChart() {
     type: 'line',
       data: {
         labels,
-        datasets: [{
+        datasets: [
+          {
             label: "Total Over Time",
             fill: true,
             backgroundColor: "#6666ff",
             data
-        }]
+        }
+      ]
     }
   });
 }
@@ -87,8 +86,7 @@ function sendTransaction(isAdding) {
   if (nameEl.value === "" || amountEl.value === "") {
     errorEl.textContent = "Missing Information";
     return;
-  }
-  else {
+  } else {
     errorEl.textContent = "";
   }
 
@@ -121,14 +119,11 @@ function sendTransaction(isAdding) {
       "Content-Type": "application/json"
     }
   })
-  .then(response => {    
-    return response.json();
-  })
+  .then(response =>  response.json())
   .then(data => {
     if (data.errors) {
       errorEl.textContent = "Missing Information";
-    }
-    else {
+    } else {
       // clear form
       nameEl.value = "";
       amountEl.value = "";
@@ -144,10 +139,12 @@ function sendTransaction(isAdding) {
   });
 }
 
-document.querySelector("#add-btn").onclick = function() {
+document.querySelector("#add-btn").addEventListener("click", function(event) {
+  event.preventDefault();
   sendTransaction(true);
-};
+});
 
-document.querySelector("#sub-btn").onclick = function() {
+document.querySelector("#sub-btn").addEventListener("click", function(event) {
+  event.preventDefault();
   sendTransaction(false);
-};
+});
